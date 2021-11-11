@@ -1,6 +1,6 @@
 # install_apk
 
-安卓端软件安装
+安卓端软件安装,只支持flutter软件内安装apk
 
 ## Getting Started
 
