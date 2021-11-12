@@ -10,6 +10,9 @@ import androidx.annotation.NonNull
 import androidx.core.content.FileProvider
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
+import io.flutter.embedding.engine.plugins.util.GeneratedPluginRegister
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -18,16 +21,18 @@ import java.io.File
 import java.io.FileNotFoundException
 
 /** InstallApkPlugin */
-class InstallApkPlugin : FlutterPlugin, MethodCallHandler {
+class InstallApkPlugin : FlutterPlugin, MethodCallHandler,ActivityAware {
     /// The MethodChannel that will the communication between Flutter and native Android
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
     /// when the Flutter Engine is detached from the Activity
     private lateinit var channel: MethodChannel
+    private lateinit var activity: Activity
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "install_apk")
         channel.setMethodCallHandler(this)
+
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
@@ -65,7 +70,7 @@ class InstallApkPlugin : FlutterPlugin, MethodCallHandler {
         }
     }
 
-    private fun showSettingPackageInstall(activity: Activity) { // todo to test with android 26
+    private fun showSettingPackageInstall(activity: Activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val intent = Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
             intent.data = Uri.parse("package:" + activity.packageName)
@@ -97,6 +102,22 @@ class InstallApkPlugin : FlutterPlugin, MethodCallHandler {
         val uri: Uri = FileProvider.getUriForFile(context, "$appId.fileProvider.install", file)
         intent.setDataAndType(uri, "application/vnd.android.package-archive")
         context.startActivity(intent)
+    }
+
+    override fun onAttachedToActivity(p0: ActivityPluginBinding) {
+        activity = p0.activity;
+    }
+
+    override fun onDetachedFromActivityForConfigChanges() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onReattachedToActivityForConfigChanges(p0: ActivityPluginBinding) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDetachedFromActivity() {
+        TODO("Not yet implemented")
     }
 
 }
