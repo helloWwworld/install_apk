@@ -105,7 +105,7 @@ class InstallApkPlugin : FlutterPlugin, MethodCallHandler,ActivityAware {
     }
 
     override fun onAttachedToActivity(p0: ActivityPluginBinding) {
-        TODO("Not yet implemented")
+        this.activity = p0.activity
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
@@ -113,7 +113,8 @@ class InstallApkPlugin : FlutterPlugin, MethodCallHandler,ActivityAware {
     }
 
     override fun onReattachedToActivityForConfigChanges(p0: ActivityPluginBinding) {
-        activity = p0.activity;
+        TODO("Not yet implemented")
+//        activity = p0.activity;
     }
 
     override fun onDetachedFromActivity() {
